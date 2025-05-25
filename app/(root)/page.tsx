@@ -12,7 +12,7 @@ import {
 
 async function Home() {
   const user = await getCurrentUser();
-if (!user?.id) {
+  if (!user?.id) {
     // Return early or show a login prompt if user is not authenticated
     return (
       <section className="flex justify-center items-center h-screen">
@@ -25,8 +25,32 @@ if (!user?.id) {
     getLatestInterviews({ userId: user.id }),
   ]);
 
+  const fallbackInterviews = [
+    {
+      id: "test-1",
+      userId: user.id,
+      interviewId: "test-1",
+      role: "Frontend Developer",
+      type: "technical",
+      techstack: ["React", "Next.js", "TypeScript"],
+      createdAt: new Date().toISOString(),
+    },
+    {
+      id: "test-2",
+      userId: user.id,
+      interviewId: "test-2",
+      role: "Backend Developer",
+      type: "behavioral",
+      techstack: ["Go", "MongoDB", "Redis"],
+      createdAt: new Date().toISOString(),
+    },
+  ];
+
   const hasPastInterviews = userInterviews?.length! > 0;
   const hasUpcomingInterviews = allInterview?.length! > 0;
+  const upcomingToShow = hasUpcomingInterviews
+    ? allInterview
+    : fallbackInterviews;
 
   return (
     <>
@@ -73,7 +97,7 @@ if (!user?.id) {
         </div>
       </section>
 
-      <section className="flex flex-col gap-6 mt-8">
+      {/* <section className="flex flex-col gap-6 mt-8">
         <h2>Take Interviews</h2>
 
         <div className="interviews-section">
@@ -92,6 +116,23 @@ if (!user?.id) {
           ) : (
             <p>There are no interviews available</p>
           )}
+        </div>
+      </section> */}
+      <section className="flex flex-col gap-6 mt-8">
+        <h2>Take Interviews</h2>
+
+        <div className="interviews-section">
+          {upcomingToShow?.map((interview) => (
+            <InterviewCard
+              key={interview.id}
+              userId={user.id}
+              interviewId={interview.id}
+              role={interview.role}
+              type={interview.type}
+              techstack={interview.techstack}
+              createdAt={interview.createdAt}
+            />
+          ))}
         </div>
       </section>
     </>
