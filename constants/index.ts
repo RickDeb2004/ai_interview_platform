@@ -379,8 +379,201 @@ export const dummyInterviews: Interview[] = [
 // };
 
 
+// export const generator = {
+//   name: "interview_flow",
+//   nodes: [
+//     {
+//       name: "start",
+//       type: "conversation",
+//       isStart: true,
+//       metadata: {
+//         position: {
+//           x:  25.578143123445045,
+//           y:  -112.6147408625659,
+//         },
+//       },
+//       prompt:
+//         "Ask users what kind about what voice agent they want to build",
+//       voice: {
+//         model: "aura-2",
+//         voiceId: "thalia",
+//         provider: "deepgram",
+//       },
+//       variableExtractionPlan: {
+//         output: [
+//           {
+//             title: "level",
+//             description: "The job experience level.",
+//             type: "string",
+//             enum: [],
+//           },
+//           {
+//             title: "amount",
+//             description: "How many questions would you like to generate?",
+//             type: "number",
+//             enum: [],
+//           },
+//           {
+//             title: "techstack",
+//             description:
+//               "A list of technologies to cover during the job interview. For example, React, Next.js, Express.js, Node and so on...",
+//             type: "string",
+//             enum: [],
+//           },
+//           {
+//             title: "role",
+//             description:
+//               "What role should would you like to train for? ",
+//             type: "string",
+//             enum: [],
+//           },
+//           {
+//             title: "type",
+//             description: "Are you aiming for a technical, behavioral or mixed interview? ",
+//             type: "string",
+//             enum: [],
+//           },
+//         ],
+//       },
+//     },
+//     {
+//       name: "apiRequest_1747896543866",
+//       type: "apiRequest",
+//       metadata: {
+//         position: {
+//           x:  29.067490751886737,
+//           y:  680.6636417357101,
+//         },
+//       },
+//       method: "POST",
+//       url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/vapi/generate`,
+//       headers: {
+//         type: "object",
+//         properties: {},
+//       },
+//       body: {
+//         type: "object",
+//         properties: {
+//           role: {
+//             type: "string",
+//             description: "",
+//             value: "{{ role }}",
+//           },
+//           level: {
+//             type: "string",
+//             description: "",
+//             value: "{{ level }}",
+//           },
+//           type: {
+//             type: "string",
+//             description: "",
+//             value: "{{ type }}",
+//           },
+//           amount: {
+//             type: "number",
+//             description: "",
+//             value: "{{ amount }}",
+//           },
+//           userid: {
+//             type: "string",
+//             description: "",
+//             value: "{{ userid }}",
+//           },
+//           techstack: {
+//             type: "string",
+//             description: "",
+//             value: "{{ techstack }}",
+//           },
+//         },
+//       },
+//       output: {
+//         type: "object",
+//         properties: {},
+//       },
+//       mode: "blocking",
+//       hooks: [],
+//     },
+//     {
+//       name: "conversation_1747897459633",
+//       type: "conversation",
+//       metadata: {
+//         position: {
+//           x: 33.20663083878412,
+//           y: 1030.0199800846597,
+//         },
+//       },
+//       prompt:
+//         "Thank the user for the conversation and inform them that the interview was generated successfully.",
+//       voice: {
+//         provider: "deepgram",
+//         voiceId: "thalia",
+//         model: "aura-2",
+//       },
+//     },
+//     {
+//       name: "conversation_1747744490967",
+//       type: "conversation",
+//       metadata: {
+//         position: {
+//           x: -11.165436030430953,
+//           y: 484.94857971060617,
+//         },
+//       },
+//       prompt: "Say that the Interview will be generated shortly.",
+//       voice: {
+//         provider: "deepgram",
+//         voiceId: "thalia",
+//         model: "aura-2",
+//       },
+//     },
+//     {
+//       name: "hangup_1747897572696",
+//       type: "hangup",
+//       metadata: {
+//         position: {
+//           x: 123.28701487108049,
+//           y: 1503.5194651005288,
+//         },
+//       },
+//     },
+//   ],
+//   edges: [
+//     {
+//       from: "apiRequest_1747896543866",
+//       to: "conversation_1747897459633",
+//       condition: {
+//         type: "ai",
+//         prompt: "",
+//       },
+//     },
+//     {
+//       from: "start",
+//       to: "conversation_1",
+//       condition: {
+//         type: "ai",
+//         prompt: "",
+//       },
+//     },
+//     {
+//       from: "conversation_1",
+//       to: "apiRequest_1747896543866",
+//       condition: {
+//         type: "ai",
+//         prompt: "",
+//       },
+//     },
+//     {
+//       from: "conversation_1747897459633",
+//       to: "hangup_1747897572696",
+//       condition: {
+//         type: "ai",
+//         prompt: "",
+//       },
+//     },
+//   ],
+// };
 export const generator = {
-  name: "interview_flow",
+  name: "Generate Interview",
   nodes: [
     {
       name: "start",
@@ -388,12 +581,12 @@ export const generator = {
       isStart: true,
       metadata: {
         position: {
-          x:  25.578143123445045,
-          y:  -112.6147408625659,
+          x: 0,
+          y: 0,
         },
       },
       prompt:
-        "Ask users what kind about what voice agent they want to build",
+        "Speak first. Greet the user and help them create a new AI Interviewer",
       voice: {
         model: "aura-2",
         voiceId: "thalia",
@@ -405,7 +598,7 @@ export const generator = {
             title: "level",
             description: "The job experience level.",
             type: "string",
-            enum: [],
+            enum: ["entry", "mid", "senior"],
           },
           {
             title: "amount",
@@ -423,26 +616,26 @@ export const generator = {
           {
             title: "role",
             description:
-              "What role should would you like to train for? ",
+              "What role should would you like to train for? For example Frontend, Backend, Fullstack, Design, UX?",
             type: "string",
             enum: [],
           },
           {
             title: "type",
-            description: "Are you aiming for a technical, behavioral or mixed interview? ",
+            description: "What type of the interview should it be? ",
             type: "string",
-            enum: [],
+            enum: ["behavioural", "technical", "mixed"],
           },
         ],
       },
     },
     {
-      name: "apiRequest_1747896543866",
+      name: "apiRequest_1747470739045",
       type: "apiRequest",
       metadata: {
         position: {
-          x:  29.067490751886737,
-          y:  680.6636417357101,
+          x: -16.075937072883846,
+          y: 703.623428447121,
         },
       },
       method: "POST",
@@ -494,12 +687,12 @@ export const generator = {
       hooks: [],
     },
     {
-      name: "conversation_1747897459633",
+      name: "conversation_1747721261435",
       type: "conversation",
       metadata: {
         position: {
-          x: 33.20663083878412,
-          y: 1030.0199800846597,
+          x: -17.547788169718615,
+          y: 1003.3409337989506,
         },
       },
       prompt:
@@ -527,20 +720,20 @@ export const generator = {
       },
     },
     {
-      name: "hangup_1747897572696",
+      name: "hangup_1747744730181",
       type: "hangup",
       metadata: {
         position: {
-          x: 123.28701487108049,
-          y: 1503.5194651005288,
+          x: 76.01267674000721,
+          y: 1272.0665127156606,
         },
       },
     },
   ],
   edges: [
     {
-      from: "apiRequest_1747896543866",
-      to: "conversation_1747897459633",
+      from: "apiRequest_1747470739045",
+      to: "conversation_1747721261435",
       condition: {
         type: "ai",
         prompt: "",
@@ -548,23 +741,23 @@ export const generator = {
     },
     {
       from: "start",
-      to: "conversation_1",
+      to: "conversation_1747744490967",
+      condition: {
+        type: "ai",
+        prompt: "If user provided all the required variables",
+      },
+    },
+    {
+      from: "conversation_1747744490967",
+      to: "apiRequest_1747470739045",
       condition: {
         type: "ai",
         prompt: "",
       },
     },
     {
-      from: "conversation_1",
-      to: "apiRequest_1747896543866",
-      condition: {
-        type: "ai",
-        prompt: "",
-      },
-    },
-    {
-      from: "conversation_1747897459633",
-      to: "hangup_1747897572696",
+      from: "conversation_1747721261435",
+      to: "hangup_1747744730181",
       condition: {
         type: "ai",
         prompt: "",
